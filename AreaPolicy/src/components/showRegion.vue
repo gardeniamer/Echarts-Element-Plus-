@@ -4,23 +4,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import { ref } from 'vue';
 
-const fileList = ref<UploadUserFile[]>([
-    {
-        name: 'element-plus-logo.svg',
-        url: 'https://element-plus.org/images/element-plus-logo.svg',
-    },
-    {
-        name: 'element-plus-logo2.svg',
-        url: 'https://element-plus.org/images/element-plus-logo.svg',
-    },
-])
+const word = ref("上传成功")
 
-const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
-    console.log(file, uploadFiles)
-}
-
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
-    console.log(uploadFile)
+const open1 = () => {
+    ElMessage(word.value)
 }
 
 const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
@@ -29,16 +16,6 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
         } totally`
     )
 }
-
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
-    return ElMessageBox.confirm(
-        `Cancel the transfer of ${uploadFile.name} ?`
-    ).then(
-        () => true,
-        () => false
-    )
-}
-
 
 interface Tree {
     label: string
@@ -153,6 +130,18 @@ const defaultProps = {
     children: 'children',
     label: 'label',
 }
+
+const upLoadSuccess = (e:any) => {
+    console.log(e);
+    word.value = "上传成功"
+    open1()
+}
+
+const upLoadFail = (e: any) => {
+    word.value = "上传失败"
+    open1()
+}
+
 </script>
 
 <template>
@@ -161,10 +150,13 @@ const defaultProps = {
         <div class="btns">
 
             <el-upload  class="upload-demo"
-                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple :on-preview="handlePreview"
-                :on-remove="handleRemove" :before-remove="beforeRemove" :limit="1" :on-exceed="handleExceed">
-                <el-button type="primary">Click to upload</el-button>
+                action="/api/upload"  :limit="1" :on-exceed="handleExceed"  :on-success = "upLoadSuccess" :on-error = "upLoadFail" >
+                <el-button type="primary">上传评价数据文件</el-button>
             </el-upload>
+
+            <el-button type="primary">专家在线评价系统</el-button>
+
+            <el-button type="primary" class="downLoad">下载评价模板文件</el-button>
 
         </div>
     </div>
@@ -190,10 +182,14 @@ const defaultProps = {
     height: 30%;
     border-radius: 10px;
     background-color: #fff;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-.upload-demo {
-    transform: translateY(100px);
+.downLoad {
+    transform: translateX(-5px);
 }
+
 </style>

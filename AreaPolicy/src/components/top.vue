@@ -3,6 +3,7 @@ import { MyRequest } from '@/untils/MyRequest';
 import * as echarts from 'echarts';
 import { onMounted, ref } from 'vue';
 import secondIndication from './secondIndication.vue';
+import { ArrowDown } from '@element-plus/icons-vue'
 const main = ref(null)
 const value: Array<Number> = []
 let count = 0
@@ -129,9 +130,27 @@ function changing2Third(params: object) {
         <div class="indicateOne">
             <div class="word">总视图</div>
             <div ref="main" class="main"></div>
+
         </div>
-        <secondIndication  @changingThird = "changing2Third"></secondIndication>
+        <secondIndication @changingThird="changing2Third"></secondIndication>
     </div>
+
+    <el-dropdown>
+        <span class="el-dropdown-link">
+            Dropdown List
+            <!-- <el-icon class="el-icon--right">
+                <arrow-down />
+            </el-icon> -->
+        </span>
+        <template #dropdown>
+            <el-dropdown-menu>
+                <el-dropdown-item>Action 1</el-dropdown-item>
+            </el-dropdown-menu>
+        </template>
+    </el-dropdown>
+
+
+
 </template>
 
 <style scoped>
@@ -166,4 +185,16 @@ function changing2Third(params: object) {
     width: 100%;
     height: 100%;
 }
+
+.example-showcase .el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary);
+    display: flex;
+    align-items: center;
+}
+
+:focus-visible {
+    outline: none;
+}
+
 </style>
