@@ -4,17 +4,37 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import { ref } from 'vue';
 
-const word = ref("上传成功")
+const message = ref("上传成功")
 
-const open1 = () => {
-    ElMessage(word.value)
+const upLoadSuccess = (params: any) => {
+    message.value = "上传成功"
+    open2()
+    console.log(params);
+    
 }
 
-const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
-    ElMessage.warning(
-        `The limit is 3, you selected ${files.length} files this time, add up to ${files.length + uploadFiles.length
-        } totally`
-    )
+const upLoadError = () => {
+    message.value = "上传失败"
+    open3()
+}
+
+const fileUpload = () => {
+    location.href = "http://47.100.201.199:9006/files/demo.xlsx"
+    message.value = "下载成功"
+    open2()
+}
+
+const open2 = () => {
+    ElMessage({
+        message: message.value,
+        type: 'success',
+    })
+}
+const open3 = () => {
+    ElMessage({
+        message: message.value,
+        type: 'warning',
+    })
 }
 
 interface Tree {
@@ -131,17 +151,6 @@ const defaultProps = {
     label: 'label',
 }
 
-const upLoadSuccess = (e:any) => {
-    console.log(e);
-    word.value = "上传成功"
-    open1()
-}
-
-const upLoadFail = (e: any) => {
-    word.value = "上传失败"
-    open1()
-}
-
 </script>
 
 <template>
@@ -150,13 +159,13 @@ const upLoadFail = (e: any) => {
         <div class="btns">
 
             <el-upload  class="upload-demo"
-                action="/api/upload"  :limit="1" :on-exceed="handleExceed"  :on-success = "upLoadSuccess" :on-error = "upLoadFail" >
+                action="/api/upload"  :limit="1" :on-exceed="handleExceed"  :on-success = "upLoadSuccess" :on-error = "upLoadError" >
                 <el-button type="primary">上传评价数据文件</el-button>
             </el-upload>
 
             <el-button type="primary">专家在线评价系统</el-button>
 
-            <el-button type="primary" class="downLoad">下载评价模板文件</el-button>
+            <el-button type="primary" class="downLoad" @click="fileUpload">下载评价模板文件</el-button>
 
         </div>
     </div>
